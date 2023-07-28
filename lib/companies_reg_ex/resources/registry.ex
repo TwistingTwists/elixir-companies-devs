@@ -6,5 +6,6 @@ defmodule CompaniesRegEx.Resources.Registry do
 
   entries do
     entry CompaniesRegEx.Resources.Recruiters
+    entry CompaniesRegEx.Resources.Developer
   end
 end
