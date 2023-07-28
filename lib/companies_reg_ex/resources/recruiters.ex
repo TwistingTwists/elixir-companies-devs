@@ -35,12 +35,12 @@ defmodule CompaniesRegEx.Resources.Recruiters do
     end
 
     attribute :introduction, :string do
-      allow_nil? false
+      # allow_nil? false
     end
 
     # company name , website, HQ,
     attribute :about_us, :string do
-      allow_nil? false
+      # allow_nil? false
     end
 
     # create JD as its own resource. - title, desc, salary (INR, currency, duration [monthly, yearly, hourly]), qualification, expectations_in_role, technologies (must_have, good_to_have, with experience? )
