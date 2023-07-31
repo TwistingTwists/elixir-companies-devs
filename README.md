@@ -1,18 +1,42 @@
 # CompaniesRegEx
 
-To start your Phoenix server:
+### Approach
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+* `Recruiters` have `JobDescription` which contains the location information
+* `Developers` have location information.
+* `elixir_companies.json` has all the companies using elixir from elixir-companies.com
+*
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## How to get started with this repo?
 
-## Learn more
+`mix setup`
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+`iex -S mix phx.server`
+
+
+## ROADMAP
+
+```
+[ ] feature: Schemas
+  [ ] Recruiters
+  [ ] Developers
+  [ ] JobDescription
+
+[ ] feature: Queries to support
+  [ ] which companies are hiring in only a region? like USA?
+  [ ] which developers are available in region like Canada.
+  [ ] all remote roles ?
+  [ ] which companies are hiring for junior / Senior / staff developer roles?
+  [ ] which comapnies are hiring in salary range 100k - 200k USD ?
+  [ ] AND / OR of any combination of above queries
+```
+
+## tests
+
+```
+[ ] Recruiters
+[ ] Developers
+[ ] JobDescription
+[ ] Match Recruiters with Developers
+```
