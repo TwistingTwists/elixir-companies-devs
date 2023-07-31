@@ -14,6 +14,20 @@ config :ash, :use_all_identities_in_manage_relationship?, false
 config :companies_reg_ex,
   ash_apis: [CompaniesRegEx.Resources]
 
+  # Geo.PostGIS: Use Jason coder
+config :geo_postgis, json_library: Jason
+
+# Ash: Type shorthands
+config :ash, :custom_types, [
+  geometry: AshGeo.Geometry,
+  geo_json: AshGeo.GeoJson,
+  geo_wkt: AshGeo.GeoWkt,
+  geo_wkb: AshGeo.GeoWkb,
+  geo_any: AshGeo.GeoAny,
+  # You may add shorthands for any narrowed types here
+  #point26918: CoolApp.Type.GeometryPoint26918,
+]
+
 config :companies_reg_ex,
   ecto_repos: [CompaniesRegEx.Repo]
 

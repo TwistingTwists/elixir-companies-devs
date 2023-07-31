@@ -53,7 +53,10 @@ defmodule CompaniesRegEx.MixProject do
       # ash dependencies
       {:ash, "~> 2.13"},
       {:ash_postgres, "~> 1.3"},
-      {:ash_phoenix, "~> 1.2"}
+      {:ash_phoenix, "~> 1.2"},
+      # postgis functionalities
+      {:ash_geo, "~> 0.1"},
+      {:geo_postgis, "~> 3.4"}
     ]
   end
 

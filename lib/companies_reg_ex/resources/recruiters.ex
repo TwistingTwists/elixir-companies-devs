@@ -1,6 +1,14 @@
 defmodule CompaniesRegEx.Resources.Recruiters do
   use Ash.Resource, data_layer: AshPostgres.DataLayer
 
+  # import AshGeo.Geometry
+  import Ash.Expr
+  import Ash.Filter.TemplateHelpers
+  import AshGeo.Postgis
+  # import AshGeo.Expr, only: [change: 1]
+  # import AshGeo.Expr
+  # import Ash.Expr, except: [expr: 1]
+
   postgres do
     table "recruiters"
     repo CompaniesRegEx.Repo
@@ -9,10 +17,12 @@ defmodule CompaniesRegEx.Resources.Recruiters do
   code_interface do
     define_for CompaniesRegEx.Resources
     define :create, action: :create
+    # define :create_loc, args: [:location], action: :create_loc
     define :read_all, action: :read
     define :update, action: :update
     define :destroy, action: :destroy
     define :get_by_id, args: [:id], action: :by_id
+    define :containing, args: [:location], action: :containing
   end
 
   actions do
@@ -26,6 +36,21 @@ defmodule CompaniesRegEx.Resources.Recruiters do
       # primary? true
       filter expr(id == ^arg(:id))
     end
+
+    action :create_loc do
+      argument :location, :geo_any
+
+      change set_attribute(:location, arg(:location))
+    end
+
+    read :containing do
+      argument :location, :geo_any do
+        allow_nil? false
+        constraints geo_types: :point
+      end
+
+      filter expr(^st_within(^arg(:location), location))
+    end
   end
 
   attributes do
@@ -36,26 +61,23 @@ defmodule CompaniesRegEx.Resources.Recruiters do
       allow_nil? false
     end
 
-    attribute :introduction, :string do
-      # allow_nil? false
-    end
+    attribute :introduction, :string
 
     # company name , website, HQ,
-    attribute :about_us, :string do
-      # allow_nil? false
-    end
-
-    # create JD as its own resource. - title, desc, salary (INR, currency, duration [monthly, yearly, hourly]), qualification, expectations_in_role, technologies (must_have, good_to_have, with experience? )
-    # HIRING IN REGION - ALL, USA, UK, Germany, EU, APAC,
-    # define overlap? - 5 hrs overlap needed with timezone (GMT+5.30)
-    attribute :job_description, :string
+    attribute :about_us, :string
 
     attribute :recruitment_steps, :string
 
     # application links (external), emails, social media etc
     attribute :contact_us, :string
 
+    attribute :location, :geometry
+    # attribute :location, AshGeo.Geometry
     # todo remove this one after done with tutorial
     attribute :content, :string
+  end
+
+  relationships do
+    has_many :job_description, CompaniesRegEx.Resources.JobDescription
   end
 end

@@ -20,6 +20,16 @@ if System.get_env("PHX_SERVER") do
   config :companies_reg_ex, CompaniesRegExWeb.Endpoint, server: true
 end
 
+# Postgrex: Geo.PostGIS types
+Postgrex.Types.define(
+  CompaniesRegEx.PostgresTypes,
+  [Geo.PostGIS.Extension] ++ Ecto.Adapters.Postgres.extensions(),
+  json: Jason
+)
+
+# Ecto: Geo.PostGIS types
+config :companies_reg_ex, CompaniesRegEx.Repo, types: CompaniesRegEx.PostgresTypes
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
