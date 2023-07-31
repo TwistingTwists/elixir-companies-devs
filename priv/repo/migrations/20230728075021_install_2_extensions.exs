@@ -8,8 +8,8 @@ defmodule CompaniesRegEx.Repo.Migrations.Install2Extensions do
   use Ecto.Migration
 
   def up do
-    execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
-    execute("CREATE EXTENSION IF NOT EXISTS \"citext\"")
+    ["uuid-ossp", "postgis", "fuzzystrmatch"]
+    |> Enum.map(fn val -> execute("CREATE EXTENSION IF NOT EXISTS \"#{val}\"") end)
   end
 
   def down do

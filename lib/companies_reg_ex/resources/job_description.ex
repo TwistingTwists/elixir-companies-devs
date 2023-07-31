@@ -20,7 +20,6 @@ defmodule CompaniesRegEx.Resources.JobDescription do
 
     read :by_id do
       argument :id, :uuid, allow_nil?: false
-      # Tells us we expect this action to return a single result
       get? true
       filter expr(id == ^arg(:id))
     end

@@ -1,13 +1,7 @@
 defmodule CompaniesRegEx.Resources.Recruiters do
   use Ash.Resource, data_layer: AshPostgres.DataLayer
 
-  # import AshGeo.Geometry
-  import Ash.Expr
-  import Ash.Filter.TemplateHelpers
   import AshGeo.Postgis
-  # import AshGeo.Expr, only: [change: 1]
-  # import AshGeo.Expr
-  # import Ash.Expr, except: [expr: 1]
 
   postgres do
     table "recruiters"
@@ -16,31 +10,28 @@ defmodule CompaniesRegEx.Resources.Recruiters do
 
   code_interface do
     define_for CompaniesRegEx.Resources
-    define :create, action: :create
-    # define :create_loc, args: [:location], action: :create_loc
+    define :create
+    define :update
+    define :destroy
+
+    # all read
     define :read_all, action: :read
-    define :update, action: :update
-    define :destroy, action: :destroy
     define :get_by_id, args: [:id], action: :by_id
-    define :containing, args: [:location], action: :containing
+    define :containing, args: [:location]
   end
 
   actions do
-    defaults [:create, :read, :update, :destroy]
+    defaults [:read, :update, :destroy]
+
+    create :create do
+      argument :location, :geo_any
+      change set_attribute(:location, arg(:location))
+    end
 
     read :by_id do
       argument :id, :uuid, allow_nil?: false
-      # Tells us we expect this action to return a single result
       get? true
-      # marks it as a primary action
-      # primary? true
       filter expr(id == ^arg(:id))
-    end
-
-    action :create_loc do
-      argument :location, :geo_any
-
-      change set_attribute(:location, arg(:location))
     end
 
     read :containing do
@@ -71,10 +62,7 @@ defmodule CompaniesRegEx.Resources.Recruiters do
     # application links (external), emails, social media etc
     attribute :contact_us, :string
 
-    attribute :location, :geometry
-    # attribute :location, AshGeo.Geometry
-    # todo remove this one after done with tutorial
-    attribute :content, :string
+    attribute :location, AshGeo.Geometry
   end
 
   relationships do
