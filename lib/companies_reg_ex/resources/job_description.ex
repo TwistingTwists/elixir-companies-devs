@@ -8,10 +8,7 @@ defmodule CompaniesRegEx.Resources.JobDescription do
 
   code_interface do
     define_for CompaniesRegEx.Resources
-    define :create, action: :create
-    define :read_all, action: :read
-    define :update, action: :update
-    define :destroy, action: :destroy
+
     define :get_by_id, args: [:id], action: :by_id
   end
 
@@ -39,6 +36,8 @@ defmodule CompaniesRegEx.Resources.JobDescription do
   end
 
   relationships do
-    belongs_to :recruiters, CompaniesRegEx.Resources.Recruiters
+    belongs_to :recruiters, CompaniesRegEx.Resources.Recruiters do
+      attribute_writable? true
+    end
   end
 end

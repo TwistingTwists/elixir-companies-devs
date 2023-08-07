@@ -3,8 +3,28 @@ defmodule CompaniesRegEx.Resources.Test do
 
   defmodule RecruitersFixture do
     alias CompaniesRegEx.Resources.Recruiters
+    alias CompaniesRegEx.Resources.JobDescription, as: JD
 
     def create_recruiter() do
+      default_attrs()
+      |> Recruiters.create()
+    end
+
+    def create_recruiter_with_jd() do
+      default_attrs()
+      |> Map.merge(%{
+        job_description: [
+          %{
+            description: "Test JD",
+            salary: "120000 USD",
+            type: "Full Time Position"
+          }
+        ]
+      })
+      |> Recruiters.create_with_jd()
+    end
+
+    def default_attrs() do
       %{
         title: "Elixir Potions Shop",
         introduction: "Elixir Shop",
@@ -13,7 +33,6 @@ defmodule CompaniesRegEx.Resources.Test do
         contact_us: "98766543210",
         location: "POINT(30 30)"
       }
-      |> Recruiters.create()
     end
   end
 
@@ -54,6 +73,16 @@ defmodule CompaniesRegEx.Resources.Test do
                  :contact_us,
                  :location
                ])
+    end
+
+    test "a recuriter has a job description" do
+      assert {:ok, recruiter} =
+               RecruitersFixture.create_recruiter_with_jd()
+               |> IO.inspect()
+
+      assert {:ok, %{job_description: jd}} =
+               Recruiters.get_by_id(recruiter.id)
+               |> IO.inspect()
     end
   end
 end

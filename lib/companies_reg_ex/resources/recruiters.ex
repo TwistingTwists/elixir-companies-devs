@@ -2,6 +2,7 @@ defmodule CompaniesRegEx.Resources.Recruiters do
   use Ash.Resource, data_layer: AshPostgres.DataLayer
 
   import AshGeo.Postgis
+  alias CompaniesRegEx.Resources.JobDescription
 
   postgres do
     table "recruiters"
@@ -11,6 +12,8 @@ defmodule CompaniesRegEx.Resources.Recruiters do
   code_interface do
     define_for CompaniesRegEx.Resources
     define :create
+    define :create_with_jd
+    # , args: [:job_description]
     define :update
     define :destroy
 
@@ -26,11 +29,21 @@ defmodule CompaniesRegEx.Resources.Recruiters do
     create :create do
       argument :location, :geo_any
       change set_attribute(:location, arg(:location))
+      # change manage_relationship(:job_description, type: :direct_control)
+    end
+
+    create :create_with_jd do
+      argument :location, :geo_any
+      change set_attribute(:location, arg(:location))
+
+      argument :job_description, {:array, :map}
+      change manage_relationship(:job_description, type: :direct_control)
     end
 
     read :by_id do
       argument :id, :uuid, allow_nil?: false
       get? true
+      prepare build(load: [:job_description])
       filter expr(id == ^arg(:id))
     end
 
